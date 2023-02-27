@@ -83,7 +83,7 @@ const isDarkTheme = () => {
     :theme="isDarkTheme() ? 'dark' : 'light'"
   >
     <v-container>
-      <v-row align="center">
+      <v-row align="center" justify="space-between">
         <v-col cols="12" md="3">
           <Megamenu />
         </v-col>
@@ -100,14 +100,11 @@ const isDarkTheme = () => {
             class="rounded-0"
           ></v-autocomplete>
         </v-col>
-        <v-spacer></v-spacer>
         <v-col cols="12" md="3">
           <div class="d-flex justify-end">
             <v-btn
-              rounded="0"
               variant="text"
               height="50"
-              class="px-4"
               :color="isDarkTheme() ? 'grey-lighten-3' : 'grey-darken-3'"
               to="/wishlist"
             >
@@ -128,7 +125,6 @@ const isDarkTheme = () => {
               </div>
             </v-btn>
             <v-btn
-              rounded="0"
               variant="text"
               height="50"
               class="text-capitalize"

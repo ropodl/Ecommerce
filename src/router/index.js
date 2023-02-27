@@ -17,6 +17,10 @@ const routes = [
     // ],
   },
   { path: "/wishlist", component: () => import("@/views/wishlist/index.vue") },
+  {
+    path: "/product/:id",
+    component: () => import("@/views/product/show.vue"),
+  },
 ];
 
 const router = createRouter({

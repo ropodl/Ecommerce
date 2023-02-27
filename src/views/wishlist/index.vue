@@ -1,8 +1,14 @@
 <script setup>
+import { defineAsyncComponent } from "vue";
 import { VDataTable } from "vuetify/labs/VDataTable";
 import { mdiDelete, mdiPencil } from "@mdi/js";
+import { useTheme } from "vuetify";
 
-let items = [
+const Breadcrumb = defineAsyncComponent(() =>
+  import("@/components/layout/Breadcrumb.vue")
+);
+
+const path = [
   {
     title: "Home",
     disabled: false,
@@ -18,15 +24,15 @@ let items = [
 let itemsPerPage = 5;
 let headers = [
   {
-    // title: "Product",
+    title: "Product Image",
     align: "start",
     sortable: false,
     key: "image",
   },
-  { title: "Product Name", align: "end", key: "name" },
-  { title: "Unit Price", align: "end", key: "price" },
-  { title: "Stock Status", align: "end", key: "status" },
-  { title: "Actions", align: "end", key: "action" },
+  { title: "Product Name", align: "start", key: "name" },
+  { title: "Unit Price", align: "start", key: "price" },
+  { title: "Stock Status", align: "start", key: "status" },
+  { title: "Actions", align: "start", key: "action" },
 ];
 let wishlist = [
   {
@@ -65,17 +71,16 @@ let wishlist = [
     status: false,
   },
 ];
+
+const isDarkTheme = () => {
+  return useTheme().global.current.value.dark;
+};
 </script>
 <template>
   <v-container>
     <v-row>
       <v-col cols="12">
-        <v-breadcrumbs
-          class="pa-0"
-          density="compact"
-          :items="items"
-          divider="-"
-        ></v-breadcrumbs>
+        <Breadcrumb :path="path" />
       </v-col>
       <v-col cols="12">
         <v-card flat color="transparent" height="150">
@@ -95,11 +100,21 @@ let wishlist = [
             :headers="headers"
             :items="wishlist"
             item-value="name"
+            class="mb-9"
           >
             <template v-slot:item.image="{ item }">
               <v-avatar rounded="0" size="100">
                 <v-img :src="item.raw.image"></v-img>
               </v-avatar>
+            </template>
+            <template v-slot:item.name="{ item }">
+              <router-link
+                class="text-decoration-none"
+                :class="isDarkTheme() ? 'white' : 'black'"
+                to="/product/test"
+              >
+                {{ item.raw.name }}
+              </router-link>
             </template>
             <template v-slot:item.price="{ item }">
               <div>

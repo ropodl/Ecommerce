@@ -130,14 +130,13 @@ let menuItems = [
       <v-btn
         block
         flat
+        rounded="lg"
         variant="flat"
         color="primary"
-        rounded="large"
         height="50"
-        class="text-capitalize"
+        class="text-capitalize rounded-b-0"
         v-bind="props"
       >
-        <!-- :color="isDarkTheme() ? 'grey-lighten-3' : 'grey-darken-3'" -->
         <v-icon start :icon="mdiMenu"></v-icon>
         <span class="px-8">All Categories</span>
         <v-icon end :icon="mdiChevronDown"></v-icon>

@@ -3,6 +3,7 @@ import { defineAsyncComponent } from "vue";
 import { useTheme } from "vuetify";
 
 const Logo = defineAsyncComponent(() => import("@/components/layout/Logo.vue"));
+
 const isDarkTheme = () => {
   return useTheme().global.current.value.dark;
 };

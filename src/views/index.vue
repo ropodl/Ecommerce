@@ -1,7 +1,11 @@
 <script setup>
-  import { defineAsyncComponent } from "vue";
-  const Carousel = defineAsyncComponent(() => import("../components/shared/home/Carousel.vue"));
-  const Hotnew = defineAsyncComponent(() => import("../components/shared/home/HotNew.vue"));
+import { defineAsyncComponent } from "vue";
+const Carousel = defineAsyncComponent(() =>
+  import("../components/shared/home/Carousel.vue")
+);
+const Hotnew = defineAsyncComponent(() =>
+  import("../components/shared/home/HotNew.vue")
+);
 </script>
 <template>
   <v-container>
