@@ -10,6 +10,9 @@ const Navbar = defineAsyncComponent(() =>
 const Social = defineAsyncComponent(() =>
   import("@/components/layout/Socialbar.vue")
 );
+const GoTop = defineAsyncComponent(() =>
+  import("@/components/layout/GoToTop.vue")
+);
 const Footer = defineAsyncComponent(() =>
   import("@/components/layout/Bottombar.vue")
 );
@@ -19,6 +22,7 @@ const Footer = defineAsyncComponent(() =>
     <Topbar />
     <Navbar />
     <router-view />
+    <GoTop />
     <Social />
     <Footer />
   </v-app>

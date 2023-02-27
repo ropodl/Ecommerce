@@ -8,6 +8,7 @@ import {
 } from "@mdi/js";
 import { useTheme } from "vuetify";
 
+const Logo = defineAsyncComponent(() => import("@/components/layout/Logo.vue"));
 const Megamenu = defineAsyncComponent(() =>
   import("@/components/layout/Megamenu.vue")
 );
@@ -38,7 +39,8 @@ const isDarkTheme = () => {
             height="60"
             max-width="200"
           >
-            <v-img height="50" width="200" src="@/assets/logo.svg"></v-img>
+            <Logo style="width: 200px; height: 50px" />
+            <!-- <v-img height="50" width="200" src="@/assets/logo.svg"></v-img> -->
           </v-btn>
         </v-col>
         <v-col cols="12" md="9">
@@ -107,6 +109,7 @@ const isDarkTheme = () => {
               height="50"
               class="px-4"
               :color="isDarkTheme() ? 'grey-lighten-3' : 'grey-darken-3'"
+              to="/wishlist"
             >
               <v-icon
                 start

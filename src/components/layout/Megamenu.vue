@@ -56,6 +56,59 @@ let menuItems = [
       },
     ],
   },
+  {
+    title: "Camera and Photo",
+    items: [
+      {
+        title: "Cameras & Photography",
+        subitems: [
+          {
+            title: "All Cameras & Photography",
+          },
+          {
+            title: "Digital SLRs",
+          },
+          {
+            title: "Point & Shoot Cameras",
+          },
+          {
+            title: "Lenses",
+          },
+          {
+            title: "Camera Accessories",
+          },
+          {
+            title: "Security & Surveillance",
+          },
+          {
+            title: "Binoculars & Telescopes",
+          },
+          {
+            title: "Camcorders",
+          },
+        ],
+      },
+      {
+        // All ElectronicsDiscover more products
+
+        title: "Audio & Video",
+        subitems: [
+          {
+            title: "All Audio & Video",
+          },
+          {
+            title: "Headphones & Speakers",
+          },
+          {
+            title: "Home Entertainment Systems",
+          },
+          {
+            title: "MP3 & Media Players",
+          },
+        ],
+      },
+    ],
+  },
 ];
 // methods
 </script>
@@ -76,19 +129,22 @@ let menuItems = [
     <template v-slot:activator="{ props }">
       <v-btn
         block
-        border
-        rounded="0"
+        flat
+        variant="flat"
+        color="primary"
+        rounded="large"
         height="50"
         class="text-capitalize"
         v-bind="props"
-        :color="isDarkTheme() ? 'grey-lighten-3' : 'grey-darken-3'"
       >
+        <!-- :color="isDarkTheme() ? 'grey-lighten-3' : 'grey-darken-3'" -->
         <v-icon start :icon="mdiMenu"></v-icon>
-        All Categories
+        <span class="px-8">All Categories</span>
         <v-icon end :icon="mdiChevronDown"></v-icon>
       </v-btn>
     </template>
     <v-container class="pa-0">
+      <div class="arrow"></div>
       <v-card
         flat
         border
@@ -154,10 +210,9 @@ let menuItems = [
                       <ul class="list-style-none pl-2">
                         <li
                           class="text-body-2 mb-2"
-                          v-for="(sub, i) in item['subitems']"
-                        >
-                          {{ sub["title"] }}
-                        </li>
+                          v-for="sub in item['subitems']"
+                          v-text="sub['title']"
+                        ></li>
                       </ul>
                     </div>
                     <a

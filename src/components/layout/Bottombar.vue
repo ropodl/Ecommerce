@@ -1,18 +1,15 @@
 <script setup>
+import { defineAsyncComponent } from "vue";
 import { useTheme } from "vuetify";
+
+const Logo = defineAsyncComponent(() => import("@/components/layout/Logo.vue"));
 const isDarkTheme = () => {
   return useTheme().global.current.value.dark;
 };
 </script>
 <template>
   <v-footer class="pa-0 d-block">
-    <v-card
-      border
-      flat
-      :theme="isDarkTheme ? 'dark' : 'light'"
-      rounded="0"
-      class="w-100"
-    >
+    <v-card border flat theme="dark" rounded="0" class="w-100">
       <v-container>
         <v-row>
           <v-col cols="12" md="3">
@@ -25,7 +22,7 @@ const isDarkTheme = () => {
               height="60"
               max-width="200"
             >
-              <v-img height="50" width="200" src="@/assets/logo.svg"></v-img>
+              <Logo style="width: 200px; height: 50px" />
             </v-btn>
           </v-col>
         </v-row>
