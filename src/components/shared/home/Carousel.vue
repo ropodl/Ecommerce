@@ -31,7 +31,7 @@
 </script>
 
 <template>
-  <v-card border flat class="rounded-t-0 border-t-0">
+  <v-card border flat class="overflow-hidden">
     <swiper
       :modules="modules"
       :slides-per-view="1"
