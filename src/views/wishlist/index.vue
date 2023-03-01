@@ -83,7 +83,7 @@ const isDarkTheme = () => {
         <Breadcrumb :path="path" />
       </v-col>
       <v-col cols="12">
-        <v-card flat color="transparent" height="150">
+        <v-card flat color="transparent" height="100">
           <v-card-title
             class="w-100 h-100 d-flex justify-center align-center text-h3"
           >

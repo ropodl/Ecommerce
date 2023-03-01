@@ -1,9 +1,3 @@
-/**
- * plugins/vuetify.js
- *
- * Framework documentation: https://vuetifyjs.com`
- */
-
 // Styles
 import "vuetify/styles";
 import { md3 } from "vuetify/blueprints";
@@ -13,7 +7,6 @@ import { fa } from "vuetify/iconsets/fa";
 import { aliases, mdi } from "vuetify/iconsets/mdi-svg";
 // Composables
 import { createVuetify } from "vuetify";
-// custom composable
 
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
 export default createVuetify({
@@ -27,7 +20,7 @@ export default createVuetify({
     },
   },
   theme: {
-    defaultTheme: "light",
+    defaultTheme: "dark",
     variations: {
       colors: ["primary", "secondary", "error", "info", "success", "warning"],
       lighten: 5,

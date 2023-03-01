@@ -15,6 +15,7 @@ const onScroll = (e) => {
     <!-- <transition name="slide-x-reverse-transition"> -->
     <v-btn
       icon
+      flat
       v-show="fab"
       aria-label="Go to top"
       size="x-large"
