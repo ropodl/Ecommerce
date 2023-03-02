@@ -5,12 +5,16 @@ import {
   mdiHeart,
   mdiShoppingOutline,
   mdiMagnify,
+  mdiClose,
 } from "@mdi/js";
 import { useTheme } from "vuetify";
 
 const Logo = defineAsyncComponent(() => import("@/components/layout/Logo.vue"));
 const Megamenu = defineAsyncComponent(() =>
   import("@/components/layout/Megamenu.vue")
+);
+const Cart = defineAsyncComponent(() =>
+  import("@/components/layout/navbar/cartdrop.vue")
 );
 
 let test = ref(null);
@@ -22,7 +26,7 @@ const isDarkTheme = () => {
 </script>
 <template>
   <v-app-bar
-    height="80"
+    height="70"
     class="navbar"
     :theme="isDarkTheme() ? 'dark' : 'light'"
     style="z-index: 2008 !important"
@@ -54,12 +58,18 @@ const isDarkTheme = () => {
           >
             Mother's Day Sales
           </v-btn>
-          <v-btn
-            height="50"
-            class="text-capitalize"
-            :color="isDarkTheme() ? 'grey-lighten-3' : 'grey-darken-3'"
-            >Pages</v-btn
-          >
+          <v-menu>
+            <template v-slot:activator="{ props }">
+              <v-btn
+                height="50"
+                class="text-capitalize"
+                :color="isDarkTheme() ? 'grey-lighten-3' : 'grey-darken-3'"
+                v-bind="props"
+                >Pages</v-btn
+              >
+            </template>
+            <v-card border> this is a test </v-card>
+          </v-menu>
           <v-btn
             height="50"
             class="text-capitalize"
@@ -87,7 +97,7 @@ const isDarkTheme = () => {
         <v-col cols="12" md="3">
           <Megamenu />
         </v-col>
-        <v-col cols="12" md="5">
+        <v-col>
           <v-autocomplete
             hide-details
             hide-no-data
@@ -100,53 +110,39 @@ const isDarkTheme = () => {
             class="rounded-0"
           ></v-autocomplete>
         </v-col>
-        <v-col cols="12" md="3">
-          <div class="d-flex justify-end">
-            <v-btn
-              variant="text"
-              height="50"
-              :color="isDarkTheme() ? 'grey-lighten-3' : 'grey-darken-3'"
-              to="/wishlist"
-            >
-              <v-icon
-                start
-                size="30"
-                :icon="test ? mdiHeart : mdiHeartOutline"
-              ></v-icon>
-              <div class="d-flex flex-column text-left">
-                <span
-                  class="text-overline text-capitalize w-100"
-                  style="line-height: 1.2rem"
-                  >Wishlist</span
-                >
-                <span class="w-100 text-capitalize" style="line-height: 1.2rem"
-                  >0 item</span
-                >
-              </div>
-            </v-btn>
-            <v-btn
-              variant="text"
-              height="50"
-              class="text-capitalize"
-              :color="isDarkTheme() ? 'grey-lighten-3' : 'grey-darken-3'"
-              @click="test = !test"
-            >
-              <v-badge
-                inline
+        <v-col cols="12" md="4">
+          <div class="d-flex">
+            <v-spacer></v-spacer>
+            <div class="d-block">
+              <span class="w-100"></span>
+              <v-btn
+                :active="false"
+                variant="text"
+                rounded="0"
+                height="50"
                 :color="isDarkTheme() ? 'grey-lighten-3' : 'grey-darken-3'"
-                :content="0"
+                to="/wishlist"
               >
-                <v-icon start size="30" :icon="mdiShoppingOutline"></v-icon>
-              </v-badge>
-              <div class="d-flex flex-column text-left">
-                <span
-                  class="text-overline text-capitalize w-100"
-                  style="line-height: 1.2rem"
-                  >Your Cart</span
-                >
-                <span class="w-100" style="line-height: 1.2rem">Rs.0.00</span>
-              </div>
-            </v-btn>
+                <v-icon
+                  start
+                  size="30"
+                  :icon="test ? mdiHeart : mdiHeartOutline"
+                ></v-icon>
+                <div class="d-flex flex-column text-left">
+                  <span
+                    class="text-overline text-capitalize w-100"
+                    style="line-height: 1.2rem"
+                    >Wishlist</span
+                  >
+                  <span
+                    class="w-100 text-capitalize"
+                    style="line-height: 1.2rem"
+                    >0 item</span
+                  >
+                </div>
+              </v-btn>
+              <Cart />
+            </div>
           </div>
         </v-col>
       </v-row>

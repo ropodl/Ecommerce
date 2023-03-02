@@ -8,6 +8,6 @@ defineProps({
     class="pa-0"
     density="compact"
     :items="path"
-    divider="-"
+    divider="."
   ></v-breadcrumbs>
 </template>

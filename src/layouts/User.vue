@@ -1,5 +1,5 @@
 <script setup>
-import { defineAsyncComponent, ref } from "vue";
+import { defineAsyncComponent, ref, reactive } from "vue";
 import {
   mdiAccount,
   mdiDownload,
@@ -42,7 +42,7 @@ const tabs = [
   },
 ];
 
-let path = [
+const path = () => [
   {
     title: "Home",
     to: "/",
@@ -53,13 +53,18 @@ let path = [
     to: "/account",
     disabled: true,
   },
+  {
+    title: tabs[currentTab.value].title,
+    to: tabs[currentTab.value].href,
+    disabled: true,
+  },
 ];
 </script>
 <template>
   <v-container>
     <v-row>
       <v-col cols="12">
-        <Breadcrumb :path="path" />
+        <Breadcrumb :path="path()" />
       </v-col>
       <v-col cols="12">
         <v-card flat color="transparent" height="100">

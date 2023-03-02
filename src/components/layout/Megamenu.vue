@@ -138,17 +138,16 @@ let menuItems = [
         v-bind="props"
       >
         <v-icon start :icon="mdiMenu"></v-icon>
-        <span class="px-8">All Categories</span>
+        <span>All Categories</span>
         <v-icon end :icon="mdiChevronDown"></v-icon>
       </v-btn>
     </template>
     <v-container class="pa-0">
-      <div class="arrow"></div>
       <v-card
         flat
         border
         :theme="isDarkTheme() ? 'dark' : 'light'"
-        rounded="0"
+        class="rounded-t-0"
         :width="menuItems[current].href ? 'auto' : '1168'"
       >
         <v-container class="pa-0">
