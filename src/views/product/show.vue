@@ -1,7 +1,14 @@
 <script setup>
 import { defineAsyncComponent, ref } from "vue";
 import { useTheme } from "vuetify";
-import { mdiHeartOutline, mdiHeart, mdiMinus, mdiPlus } from "@mdi/js";
+import {
+  mdiHeartOutline,
+  mdiHeart,
+  mdiMinus,
+  mdiPlus,
+  mdiShare,
+  mdiShareOutline,
+} from "@mdi/js";
 import VueMagnifier from "@websitebeaver/vue-magnifier";
 import "@websitebeaver/vue-magnifier/styles.css";
 import { useRoute } from "vue-router";
@@ -10,6 +17,9 @@ const route = useRoute();
 // components
 const Breadcrumb = defineAsyncComponent(() =>
   import("@/components/layout/Breadcrumb.vue")
+);
+const Reviews = defineAsyncComponent(() =>
+  import("@/components/shared/product/reviews.vue")
 );
 // data
 const path = [
@@ -49,11 +59,23 @@ let currentProduct = [
 ];
 
 let wish = ref(false);
-let tabs = ref(null);
+let currentTab = ref(null);
 let review = [{}];
 // methods
 const isDarkTheme = () => {
   return useTheme().global.current.value.dark;
+};
+const descIntersect = (isIntersecting, entries, observer) => {
+  isIntersecting ? (currentTab.value = "description") : "";
+};
+const specIntersect = (isIntersecting, entries, observer) => {
+  isIntersecting ? (currentTab.value = "specification") : "";
+};
+const reviewIntersect = (isIntersecting, entries, observer) => {
+  isIntersecting ? (currentTab.value = "reviews") : "";
+};
+const accessoriesIntersect = (isIntersecting, entries, observer) => {
+  isIntersecting ? (currentTab.value = "accessories") : "";
 };
 </script>
 <template>
@@ -140,6 +162,7 @@ const isDarkTheme = () => {
           <v-col cols="12" md="6">
             <div class="d-flex align-center h-100">
               <v-spacer></v-spacer>
+              <v-btn flat :icon="mdiShareOutline" class="mr-3"></v-btn>
               <v-btn flat :icon="mdiHeartOutline"></v-btn>
             </div>
           </v-col>
@@ -198,20 +221,17 @@ const isDarkTheme = () => {
             </v-hover>
           </v-col>
           <v-col cols="12" md="3">
-            <v-hover v-slot="{ isHovering, props }">
-              <v-btn
-                icon
-                rounded="circle"
-                width="52"
-                v-bind="props"
-                variant="outlined"
-                class="text-capitalize"
-                :class="wish ? 'text-red' : ''"
-                @click="wish = !wish"
-              >
-                <v-icon :icon="wish ? mdiHeartOutline : mdiHeart"></v-icon>
-              </v-btn>
-            </v-hover>
+            <v-btn
+              icon
+              rounded="circle"
+              width="52"
+              variant="outlined"
+              class="text-capitalize"
+              :class="wish ? 'text-red' : ''"
+              @click="wish = !wish"
+            >
+              <v-icon :icon="wish ? mdiHeartOutline : mdiHeart"></v-icon>
+            </v-btn>
           </v-col>
         </v-row>
       </v-col>
@@ -233,7 +253,7 @@ const isDarkTheme = () => {
     <v-container class="pa-0">
       <v-row>
         <v-col cols="12">
-          <v-tabs v-model="tabs" height="80">
+          <v-tabs v-model="currentTab" height="80">
             <v-tab value="description" @click="scrollTo('description', 160)"
               >Description</v-tab
             >
@@ -246,6 +266,14 @@ const isDarkTheme = () => {
             <v-tab value="accessories" @click="scrollTo('accessories', 160)"
               >Accessories</v-tab
             >
+            <v-tab>
+              <v-avatar
+                :color="description ? 'green-lighten-1' : 'red-darken-2'"
+                variant="flat"
+                class="me-3 swing-transition"
+                size="32"
+              ></v-avatar>
+            </v-tab>
           </v-tabs>
         </v-col>
       </v-row>
@@ -254,40 +282,36 @@ const isDarkTheme = () => {
   <v-container>
     <v-row>
       <v-col cols="12">
-        <div id="description" class="mb-6" v-html="description"></div>
+        <div
+          id="description"
+          class="mb-6"
+          v-html="description"
+          v-intersect="descIntersect"
+        ></div>
       </v-col>
       <v-col cols="12">
-        <v-card border flat id="specification" class="pa-10 my-16">
+        <v-card
+          border
+          flat
+          id="specification"
+          v-intersect="specIntersect"
+          class="pa-10 my-16"
+        >
           <v-card-title>This is the way</v-card-title>
         </v-card>
       </v-col>
     </v-row>
   </v-container>
-  <v-card flat border rounded="0" id="review" class="border-s-0 border-e-0">
+  <div v-intersect="reviewIntersect">
+    <Reviews />
+  </div>
+  <div v-intersect="accessoriesIntersect">
     <v-container>
-      <v-row class="py-10">
-        <v-col cols="12" md="5">
-          <v-card-title class="text-h5">Reviews</v-card-title>
-          <v-divider></v-divider>
-          <v-card-text> test </v-card-text>
-        </v-col>
-        <v-col cols="12" md="7">
-          <v-card-title>
-            {{
-              review.length > 0
-                ? "Write a review for"
-                : "Be the first to review"
-            }}
-          </v-card-title>
-          <v-divider></v-divider>
-          <v-card-text>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum,
-            minima?
-          </v-card-text>
-        </v-col>
+      <v-row>
+        <v-col cols="12"> Accessories </v-col>
       </v-row>
     </v-container>
-  </v-card>
+  </div>
 </template>
 
 <style lang="scss" scoped>
@@ -308,6 +332,7 @@ input[type="number"] {
 </style>
 <script>
 export default {
+  methods: {},
   data() {
     return {
       description: `
