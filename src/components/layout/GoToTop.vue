@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from "vue";
-import { scrollToId } from "@/composable/scrollToId.js";
+import { scrollTo } from "@/composable/scrollTo.js";
 
 let fab = ref(false);
 
@@ -23,7 +23,7 @@ const onScroll = (e) => {
       position="fixed"
       location="bottom right"
       v-bind="props"
-      @click="scrollToId('app')"
+      @click="scrollTo('app')"
       v-scroll="onScroll"
       class="ma-10"
       :icon="

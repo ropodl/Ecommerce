@@ -1,10 +1,11 @@
 <script setup>
 import { defineAsyncComponent, ref } from "vue";
 import { useTheme } from "vuetify";
-import { mdiHeartOutline, mdiHeart } from "@mdi/js";
+import { mdiHeartOutline, mdiHeart, mdiMinus, mdiPlus } from "@mdi/js";
 import VueMagnifier from "@websitebeaver/vue-magnifier";
 import "@websitebeaver/vue-magnifier/styles.css";
 import { useRoute } from "vue-router";
+import { scrollTo } from "@/composable/scrollTo";
 const route = useRoute();
 // components
 const Breadcrumb = defineAsyncComponent(() =>
@@ -27,10 +28,11 @@ const path = [
   },
 ];
 let activeSlide = ref(0);
+let quantity = ref(1);
 let currentProduct = [
   {
     title: "Image 1",
-    src: "https://images.unsplash.com/photo-1618614944895-fc409a83ad80?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=512&q=80",
+    src: "https://images.unsplash.com/photo-1618614944895-fc409a83ad80?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=512&q=10",
   },
   {
     title: "Image 2",
@@ -47,6 +49,8 @@ let currentProduct = [
 ];
 
 let wish = ref(false);
+let tabs = ref(null);
+let review = [{}];
 // methods
 const isDarkTheme = () => {
   return useTheme().global.current.value.dark;
@@ -103,10 +107,44 @@ const isDarkTheme = () => {
         </div>
       </v-col>
       <v-col cols="12" md="7">
+        <v-rating
+          readonly
+          v-model:model-value="quantity"
+          color="orange"
+          size="small"
+          :value="2"
+          density="compact"
+        ></v-rating>
         <div class="text-h5 font-weight-bold">
           60UH6150 60-Inch 4K Ultra HD Smart LED TV
         </div>
-        <v-divider class="my-4"></v-divider>
+        <v-divider class="mt-4"></v-divider>
+        <v-row>
+          <v-col cols="12" md="6">
+            <v-list class="pa-0" bg-color="transparent">
+              <v-list-item to="/" :ripple="false" :active="false" class="py-3">
+                <template v-slot:prepend>
+                  <v-avatar size="60">
+                    <v-img
+                      src="https://images.unsplash.com/photo-1618614944895-fc409a83ad80?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=512&q=10"
+                    ></v-img>
+                  </v-avatar>
+                </template>
+                <v-list-item-title class="text-h6 font-weight-bold"
+                  >Nike</v-list-item-title
+                >
+                <v-list-item-title>Explore more product</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-col>
+          <v-col cols="12" md="6">
+            <div class="d-flex align-center h-100">
+              <v-spacer></v-spacer>
+              <v-btn flat :icon="mdiHeartOutline"></v-btn>
+            </div>
+          </v-col>
+        </v-row>
+        <v-divider class="mb-4"></v-divider>
         <div class="mb-3">
           <ul class="list-style-none">
             <li>Multimedia Speakers</li>
@@ -127,11 +165,31 @@ const isDarkTheme = () => {
         </div>
         <v-row>
           <v-col cols="12" md="6">
+            <div class="d-inline-flex">
+              bad
+              <v-text-field
+                type="number"
+                min="1"
+                max="10"
+                step="1"
+                class="mx-4"
+                v-model="quantity"
+                :prepend-icon="mdiPlus"
+                @click:prepend="quantity++"
+                :append-icon="mdiMinus"
+                @click:append="quantity--"
+                style="width: 300px"
+              ></v-text-field>
+            </div>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="12" md="5">
             <v-hover v-slot="{ isHovering, props }">
               <v-btn
                 block
+                height="50"
                 v-bind="props"
-                size="x-large"
                 :variant="isHovering ? 'flat' : 'outlined'"
                 class="text-capitalize"
               >
@@ -142,10 +200,10 @@ const isDarkTheme = () => {
           <v-col cols="12" md="3">
             <v-hover v-slot="{ isHovering, props }">
               <v-btn
-                fab
+                icon
                 rounded="circle"
+                width="52"
                 v-bind="props"
-                height="52"
                 variant="outlined"
                 class="text-capitalize"
                 :class="wish ? 'text-red' : ''"
@@ -159,9 +217,172 @@ const isDarkTheme = () => {
       </v-col>
     </v-row>
   </v-container>
+  <v-card
+    border
+    flat
+    rounded="0"
+    class="border-e-0 border-s-0"
+    :color="isDarkTheme() ? 'rgba(31,31,31,0.9)' : 'rgba(255,255,255,0.8)'"
+    style="
+      position: sticky;
+      top: 70px;
+      z-index: 999;
+      backdrop-filter: blur(10px);
+    "
+  >
+    <v-container class="pa-0">
+      <v-row>
+        <v-col cols="12">
+          <v-tabs v-model="tabs" height="80">
+            <v-tab value="description" @click="scrollTo('description', 160)"
+              >Description</v-tab
+            >
+            <v-tab value="specification" @click="scrollTo('specification', 160)"
+              >Specification</v-tab
+            >
+            <v-tab value="reviews" @click="scrollTo('review', 160)"
+              >Reviews(10)</v-tab
+            >
+            <v-tab value="accessories" @click="scrollTo('accessories', 160)"
+              >Accessories</v-tab
+            >
+          </v-tabs>
+        </v-col>
+      </v-row>
+    </v-container>
+  </v-card>
+  <v-container>
+    <v-row>
+      <v-col cols="12">
+        <div id="description" class="mb-6" v-html="description"></div>
+      </v-col>
+      <v-col cols="12">
+        <v-card border flat id="specification" class="pa-10 my-16">
+          <v-card-title>This is the way</v-card-title>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
+  <v-card flat border rounded="0" id="review" class="border-s-0 border-e-0">
+    <v-container>
+      <v-row class="py-10">
+        <v-col cols="12" md="5">
+          <v-card-title class="text-h5">Reviews</v-card-title>
+          <v-divider></v-divider>
+          <v-card-text> test </v-card-text>
+        </v-col>
+        <v-col cols="12" md="7">
+          <v-card-title>
+            {{
+              review.length > 0
+                ? "Write a review for"
+                : "Be the first to review"
+            }}
+          </v-card-title>
+          <v-divider></v-divider>
+          <v-card-text>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum,
+            minima?
+          </v-card-text>
+        </v-col>
+      </v-row>
+    </v-container>
+  </v-card>
 </template>
+
 <style lang="scss" scoped>
 .border-black {
   outline: 1px solid black;
 }
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0 !important;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield !important;
+}
 </style>
+<script>
+export default {
+  data() {
+    return {
+      description: `
+<h1 style="text-align: center">
+  Exceptional color. Authentic images.
+</h1>
+<p
+  style="
+    text-align: center;
+    max-width: 1160px;
+    margin: auto auto 60px;
+  "
+>
+  Nullam dignissim elit ut urna rutrum, a fermentum mi auctor.
+  Mauris efficitur magna orci, et dignissim lacus scelerisque sit
+  amet. Proin malesuada tincidunt nisl ac commodo. Vivamus eleifend
+  porttitor ex sit amet suscipit. Vestibulum at ullamcorper lacus,
+  vel facilisis arcu. Aliquam erat volutpat.
+</p>
+<div style="text-align: center">
+  <!---<iframe
+    loading="lazy"
+    src="https://www.youtube.com/embed/K5OGs8a3vlM?ecver=1"
+    allowfullscreen="allowfullscreen"
+    width="854"
+    height="480"
+    frameborder="0"
+  ></iframe>--->
+</div>
+<div class="outer-wrap">
+  <div class="content-info">
+    <h1 style="text-align: left">
+      Dynamic brightness<br />
+      reveals hidden details
+    </h1>
+    <p style="text-align: left">
+      Nullam dignissim elit ut urna rutrum, a fermentum mi auctor.
+      Mauris efficitur magna orci, et dignissim lacus<br />
+      scelerisque sit amet. Proin malesuada tincidunt nisl ac
+      commodo. Vivamus eleifend porttitor ex sit amet suscipit.<br />
+      Vestibulum at ullamcorper lacus, vel facilisis arcu. Aliquam
+      erat volutpat.
+    </p>
+  </div>
+  <div class="image-info">
+    <img
+      decoding="async"
+      src="https://demo2.chethemes.com/techmarket//wp-content/uploads/2017/06/des1.png"
+    />
+  </div>
+</div>
+<div class="outer-wrap">
+  <div class="image-info">
+    <img
+      decoding="async"
+      class="alignnone"
+      src="https://demo2.chethemes.com/techmarket//wp-content/uploads/2017/06/des2.png"
+    />
+  </div>
+  <div class="content-info">
+    <h1 style="text-align: right">
+      An incredible view,<br />
+      wherever you sit
+    </h1>
+    <p style="text-align: right">
+      Nullam dignissim elit ut urna rutrum, a fermentum mi auctor.
+      Mauris efficitur magna orci, et dignissim lacus<br />
+      scelerisque sit amet. Proin malesuada tincidunt nisl ac
+      commodo. Vivamus eleifend porttitor ex sit amet suscipit.
+      Vestibulum at ullamcorper lacus, vel facilisis arcu. Aliquam
+      erat volutpat.
+    </p>
+  </div>
+</div>`,
+    };
+  },
+};
+</script>
