@@ -4,19 +4,19 @@ export const useReview = defineStore("review", {
   state: () => ({
     reviews: [
       {
-        title: "Test",
+        name: "Test",
+        desc: "this is a test and the test is this this is a test and the test is this this is a test and the test is this this is a test and the test is this this is a test and the test is this this is a test and the test is this this is a test and the test is this this is a test and the test is this this is a test and the test is this this is a test and the test is this",
+      },
+      {
+        name: "Test",
         desc: "this is a test and the test is this",
       },
       {
-        title: "Test",
+        name: "Test",
         desc: "this is a test and the test is this",
       },
       {
-        title: "Test",
-        desc: "this is a test and the test is this",
-      },
-      {
-        title: "Test",
+        name: "Test",
         desc: "this is a test and the test is this",
       },
     ],

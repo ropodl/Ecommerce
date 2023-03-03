@@ -6,8 +6,8 @@ import {
   mdiHeart,
   mdiMinus,
   mdiPlus,
-  mdiShare,
-  mdiShareOutline,
+  mdiShareVariantOutline,
+  mdiMagnifyPlusOutline,
 } from "@mdi/js";
 import VueMagnifier from "@websitebeaver/vue-magnifier";
 import "@websitebeaver/vue-magnifier/styles.css";
@@ -120,12 +120,22 @@ const accessoriesIntersect = (isIntersecting, entries, observer) => {
               </v-card>
             </v-slide-group-item>
           </v-slide-group>
-          <VueMagnifier
-            class="rounded"
-            :mgCornerBgColor="isDarkTheme() ? '#121212' : '#ffffff'"
-            mg-shape="square"
-            :src="currentProduct[activeSlide].src"
-          />
+          <div class="position-relative">
+            <VueMagnifier
+              class="rounded"
+              :mgCornerBgColor="isDarkTheme() ? '#121212' : '#ffffff'"
+              mg-shape="square"
+              :src="currentProduct[activeSlide].src"
+            />
+            <v-btn
+              icon
+              flat
+              color="transparent"
+              style="position: absolute; top: 0; right: 0"
+            >
+              <v-icon :icon="mdiMagnifyPlusOutline"></v-icon>
+            </v-btn>
+          </div>
         </div>
       </v-col>
       <v-col cols="12" md="7">
@@ -162,8 +172,12 @@ const accessoriesIntersect = (isIntersecting, entries, observer) => {
           <v-col cols="12" md="6">
             <div class="d-flex align-center h-100">
               <v-spacer></v-spacer>
-              <v-btn flat :icon="mdiShareOutline" class="mr-3"></v-btn>
-              <v-btn flat :icon="mdiHeartOutline"></v-btn>
+              <v-btn icon color="transparent" class="mr-3">
+                <v-icon :icon="mdiShareVariantOutline"></v-icon>
+              </v-btn>
+              <v-btn icon color="transparent">
+                <v-icon :icon="mdiHeartOutline"></v-icon>
+              </v-btn>
             </div>
           </v-col>
         </v-row>
@@ -266,14 +280,6 @@ const accessoriesIntersect = (isIntersecting, entries, observer) => {
             <v-tab value="accessories" @click="scrollTo('accessories', 160)"
               >Accessories</v-tab
             >
-            <v-tab>
-              <v-avatar
-                :color="description ? 'green-lighten-1' : 'red-darken-2'"
-                variant="flat"
-                class="me-3 swing-transition"
-                size="32"
-              ></v-avatar>
-            </v-tab>
           </v-tabs>
         </v-col>
       </v-row>
@@ -295,20 +301,20 @@ const accessoriesIntersect = (isIntersecting, entries, observer) => {
           flat
           id="specification"
           v-intersect="specIntersect"
-          class="pa-10 my-16"
+          class="pa-10"
         >
           <v-card-title>This is the way</v-card-title>
         </v-card>
       </v-col>
     </v-row>
   </v-container>
-  <div v-intersect="reviewIntersect">
-    <Reviews />
+  <div id="review">
+    <Reviews v-intersect="reviewIntersect" />
   </div>
   <div v-intersect="accessoriesIntersect">
     <v-container>
       <v-row>
-        <v-col cols="12"> Accessories </v-col>
+        <v-col cols="12">Accessories</v-col>
       </v-row>
     </v-container>
   </div>
