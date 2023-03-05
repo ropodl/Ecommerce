@@ -1,5 +1,4 @@
 <script setup>
-import { ref } from "vue";
 import { useReview } from "@/stores/review";
 
 const review = useReview();

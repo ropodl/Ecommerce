@@ -1,5 +1,5 @@
 <script setup>
-import { defineAsyncComponent, ref } from "vue";
+import { defineAsyncComponent, ref, computed, reactive } from "vue";
 import { useTheme } from "vuetify";
 import {
   mdiHeartOutline,
@@ -22,7 +22,7 @@ const Reviews = defineAsyncComponent(() =>
   import("@/components/shared/product/reviews.vue")
 );
 // data
-const path = [
+const path = reactive([
   {
     title: "Home",
     to: "/",
@@ -30,13 +30,15 @@ const path = [
   },
   {
     title: "Product",
-    disabled: true,
+    disabled: false,
   },
   {
-    title: route.params.id,
+    title: computed(() => {
+      return route.params.id;
+    }),
     disabled: true,
   },
-];
+]);
 let activeSlide = ref(0);
 let quantity = ref(1);
 let currentProduct = [
@@ -57,16 +59,15 @@ let currentProduct = [
     src: "https://images.unsplash.com/photo-1618614944895-fc409a83ad80?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=512&q=80",
   },
 ];
-
 let wish = ref(false);
 let currentTab = ref(null);
-let review = [{}];
 // methods
 const isDarkTheme = () => {
   return useTheme().global.current.value.dark;
 };
 const descIntersect = (isIntersecting, entries, observer) => {
-  isIntersecting ? (currentTab.value = "description") : "";
+  console.log(entries);
+  isIntersecting ?? (currentTab.value = "description");
 };
 const specIntersect = (isIntersecting, entries, observer) => {
   isIntersecting ? (currentTab.value = "specification") : "";
@@ -83,11 +84,13 @@ const accessoriesIntersect = (isIntersecting, entries, observer) => {
     <v-row>
       <v-col cols="12">
         <Breadcrumb :path="path" />
+        <v-btn to="/product/a">a</v-btn>
+        <v-btn to="/product/test">test</v-btn>
       </v-col>
     </v-row>
     <v-row>
       <v-col cols="12" md="5">
-        <div class="d-flex">
+        <div class="d-flex" style="position: sticky; top: 80px">
           <v-slide-group
             show-arrows
             mandatory
@@ -172,10 +175,10 @@ const accessoriesIntersect = (isIntersecting, entries, observer) => {
           <v-col cols="12" md="6">
             <div class="d-flex align-center h-100">
               <v-spacer></v-spacer>
-              <v-btn icon color="transparent" class="mr-3">
+              <v-btn icon flat color="transparent" class="mr-3">
                 <v-icon :icon="mdiShareVariantOutline"></v-icon>
               </v-btn>
-              <v-btn icon color="transparent">
+              <v-btn icon flat color="transparent">
                 <v-icon :icon="mdiHeartOutline"></v-icon>
               </v-btn>
             </div>
@@ -221,13 +224,26 @@ const accessoriesIntersect = (isIntersecting, entries, observer) => {
           </v-col>
         </v-row>
         <v-row>
-          <v-col cols="12" md="5">
+          <v-col cols="12" md="6">
+            <v-btn
+              flat
+              block
+              rounded="small"
+              size="large"
+              height="50"
+              color="red-darken-2"
+              class="text-capitalize"
+            >
+              Buy Now
+            </v-btn>
+          </v-col>
+          <v-col cols="12" md="6">
             <v-hover v-slot="{ isHovering, props }">
               <v-btn
                 block
+                rounded="small"
                 height="50"
                 v-bind="props"
-                :variant="isHovering ? 'flat' : 'outlined'"
                 class="text-capitalize"
               >
                 Add to cart
@@ -260,7 +276,7 @@ const accessoriesIntersect = (isIntersecting, entries, observer) => {
     style="
       position: sticky;
       top: 70px;
-      z-index: 999;
+      z-index: 10;
       backdrop-filter: blur(10px);
     "
   >
@@ -280,6 +296,7 @@ const accessoriesIntersect = (isIntersecting, entries, observer) => {
             <v-tab value="accessories" @click="scrollTo('accessories', 160)"
               >Accessories</v-tab
             >
+            <v-tab> intersection observer not working </v-tab>
           </v-tabs>
         </v-col>
       </v-row>
@@ -287,34 +304,32 @@ const accessoriesIntersect = (isIntersecting, entries, observer) => {
   </v-card>
   <v-container>
     <v-row>
-      <v-col cols="12">
-        <div
-          id="description"
-          class="mb-6"
-          v-html="description"
-          v-intersect="descIntersect"
-        ></div>
+      <v-col cols="12" v-intersect="descIntersect">
+        <div id="description" class="mb-6" v-html="description"></div>
       </v-col>
-      <v-col cols="12">
-        <v-card
-          border
-          flat
-          id="specification"
-          v-intersect="specIntersect"
-          class="pa-10"
-        >
-          <v-card-title>This is the way</v-card-title>
+      <v-col cols="12" v-intersect="specIntersect">
+        <v-card border flat id="specification" class="pa-16 ma-16">
+          <v-card-title v-html="specification"></v-card-title>
         </v-card>
       </v-col>
     </v-row>
   </v-container>
-  <div id="review">
-    <Reviews v-intersect="reviewIntersect" />
+  <div id="review" v-intersect="reviewIntersect">
+    <Reviews />
   </div>
   <div v-intersect="accessoriesIntersect">
     <v-container>
-      <v-row>
-        <v-col cols="12">Accessories</v-col>
+      <v-row class="py-16">
+        <v-col cols="12">
+          <div class="text-h5">Bundled Accessories</div>
+        </v-col>
+        <v-col cols="12" md="4" v-for="i in 8">
+          <v-card border flat>
+            <v-card-text>
+              {{ i }}
+            </v-card-text>
+          </v-card>
+        </v-col>
       </v-row>
     </v-container>
   </div>
@@ -413,6 +428,93 @@ export default {
     </p>
   </div>
 </div>`,
+      specification: `
+<h3 class="tm-attributes-title">General</h3><table class="woocommerce-product-attributes shop_attributes">
+			<tbody><tr class="woocommerce-product-attributes-item woocommerce-product-attributes-item--attribute_pa_lable">
+			<th class="woocommerce-product-attributes-item__label">Label</th>
+			<td class="woocommerce-product-attributes-item__value"><p><a href="https://demo2.chethemes.com/techmarket/lable/a-2/" rel="tag">A+</a></p>
+</td>
+		</tr>
+			<tr class="woocommerce-product-attributes-item woocommerce-product-attributes-item--attribute_pa_brand">
+			<th class="woocommerce-product-attributes-item__label">Brand</th>
+			<td class="woocommerce-product-attributes-item__value"><p><a href="https://demo2.chethemes.com/techmarket/brand/galaxy/" rel="tag">Galaxy</a></p>
+</td>
+		</tr>
+	</tbody></table>
+<h3 class="tm-attributes-title">Technical Specs</h3>
+<table class="shop_attributes">
+<tbody>
+<tr>
+<th>Screen Size</th>
+<td>40″</td>
+</tr>
+<tr>
+<th>Aspect Ratio</th>
+<td>16:9</td>
+</tr>
+<tr>
+<th>3DTV</th>
+<td>No</td>
+</tr>
+<tr>
+<th>Recommended Resolution</th>
+<td>1080p</td>
+</tr>
+<tr>
+<th>Panel</th>
+<td>LED</td>
+</tr>
+<tr>
+<th>Tuner</th>
+<td>ATSC/Clear QAM Tuners</td>
+</tr>
+<tr>
+<th>Refresh Rate</th>
+<td>120Hz</td>
+</tr>
+<tr>
+<th>Refresh Rate</th>
+<td>120Hz</td>
+</tr>
+</tbody>
+</table>
+<h3 class="tm-attributes-title">Connectivity</h3>
+<table class="shop_attributes">
+<tbody>
+<tr>
+<th>HDMI</th>
+<td>2 In</td>
+</tr>
+<tr>
+<th>Digital Audio</th>
+<td>1 Optical Out</td>
+</tr>
+<tr>
+<th>Other Connectors</th>
+<td>1 x RF In</td>
+<td>1 x Audio Out (Mini Jack)</td>
+<td>1 x RS232C</td>
+</tr>
+<tr>
+<th>LAN</th>
+<td>1</td>
+</tr>
+<tr>
+<th>Composite A/V</th>
+<td>1 In</td>
+</tr>
+<tr>
+<th>USB</th>
+<td>2</td>
+</tr>
+<tr>
+<th>Component Video</th>
+<td>1 in</td>
+</tr>
+</tbody>
+</table>
+
+`,
     };
   },
 };

@@ -64,7 +64,6 @@ const removeItem = (id) => {
     location-strategy="static"
     scroll-strategy="none"
     transition="slide-y-reverse-transition"
-    content-class="test"
   >
     <template v-slot:activator="{ props }">
       <v-btn

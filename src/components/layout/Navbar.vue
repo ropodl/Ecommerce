@@ -3,9 +3,14 @@ import { ref, defineAsyncComponent } from "vue";
 import {
   mdiHeartOutline,
   mdiHeart,
-  mdiShoppingOutline,
   mdiMagnify,
-  mdiClose,
+  mdiLogout,
+  mdiPower,
+  mdiAccount,
+  mdiMapMarker,
+  mdiDownload,
+  mdiShopping,
+  mdiAccountDetails,
 } from "@mdi/js";
 import { useTheme } from "vuetify";
 
@@ -132,17 +137,78 @@ const isDarkTheme = () => {
                   <span
                     class="text-overline text-capitalize w-100"
                     style="line-height: 1.2rem"
-                    >Wishlist</span
                   >
+                    Wishlist
+                  </span>
                   <span
                     class="w-100 text-capitalize"
                     style="line-height: 1.2rem"
-                    >0 item</span
                   >
+                    0 item
+                  </span>
                 </div>
               </v-btn>
               <Cart />
             </div>
+            <v-menu
+              contained
+              width="220"
+              scroll-strategy="none"
+              class="position-relative"
+              transition="slide-y-reverse-transition"
+            >
+              <template v-slot:activator="{ props }">
+                <v-btn icon height="50" color="transparent" v-bind="props">
+                  <v-avatar>
+                    <v-img
+                      cover
+                      src="https://images.unsplash.com/photo-1618614944895-fc409a83ad80?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=512&q=10"
+                    ></v-img>
+                  </v-avatar>
+                </v-btn>
+              </template>
+              <v-card border flat class="rounded-t-0">
+                <v-list density="compact" class="py-0">
+                  <v-list-item to="/account" :active="false">
+                    <template v-slot:prepend>
+                      <v-icon :icon="mdiAccount"></v-icon>
+                    </template>
+                    <v-list-item-title>My Account</v-list-item-title>
+                  </v-list-item>
+                  <v-list-item to="/account/orders" :active="false">
+                    <template v-slot:prepend>
+                      <v-icon :icon="mdiShopping"></v-icon>
+                    </template>
+                    <v-list-item-title>Orders</v-list-item-title>
+                  </v-list-item>
+                  <v-list-item to="/account/downloads" :active="false">
+                    <template v-slot:prepend>
+                      <v-icon :icon="mdiDownload"></v-icon>
+                    </template>
+                    <v-list-item-title>Downloads</v-list-item-title>
+                  </v-list-item>
+                  <v-list-item to="/account/address" :active="false">
+                    <template v-slot:prepend>
+                      <v-icon :icon="mdiMapMarker"></v-icon>
+                    </template>
+                    <v-list-item-title>Address</v-list-item-title>
+                  </v-list-item>
+                  <v-list-item to="/account/details" :active="false">
+                    <template v-slot:prepend>
+                      <v-icon :icon="mdiAccountDetails"></v-icon>
+                    </template>
+                    <v-list-item-title>Account Details</v-list-item-title>
+                  </v-list-item>
+                  <v-divider></v-divider>
+                  <v-list-item to="/" :active="false">
+                    <template v-slot:prepend>
+                      <v-icon :icon="mdiPower"></v-icon>
+                    </template>
+                    <v-list-item-title>Log Out</v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-card>
+            </v-menu>
           </div>
         </v-col>
       </v-row>

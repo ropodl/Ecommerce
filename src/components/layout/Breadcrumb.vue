@@ -5,7 +5,7 @@ defineProps({
 </script>
 <template>
   <v-breadcrumbs
-    class="pa-0"
+    class="pa-0 text-capitalize"
     density="compact"
     :items="path"
     divider="."

@@ -1,11 +1,11 @@
 <script setup>
-import { defineAsyncComponent, ref, reactive } from "vue";
+import { defineAsyncComponent, ref } from "vue";
 import {
   mdiAccount,
   mdiDownload,
   mdiMapMarker,
   mdiShopping,
-  mdiViewDashboard,
+  mdiAccountDetails,
 } from "@mdi/js";
 
 const Breadcrumb = defineAsyncComponent(() =>
@@ -18,7 +18,7 @@ const tabs = [
   {
     title: "Dashboard",
     href: "/account/",
-    icon: mdiViewDashboard,
+    icon: mdiAccount,
   },
   {
     title: "Orders",
@@ -38,7 +38,7 @@ const tabs = [
   {
     title: "Account Details",
     href: "/account/details",
-    icon: mdiAccount,
+    icon: mdiAccountDetails,
   },
 ];
 
