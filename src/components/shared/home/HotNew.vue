@@ -36,9 +36,9 @@ let tab = ref(null);
       <v-col cols="12">
         <v-window v-model="tab">
           <v-window-item v-for="i in 3" :key="i" :value="i">
-            <v-container>
+            <v-container class="px-0">
               <v-row>
-                <v-col cols="12" md="3">
+                <v-col cols="12" md="3" v-for="i in 4">
                   <ProductCard />
                 </v-col>
               </v-row>
