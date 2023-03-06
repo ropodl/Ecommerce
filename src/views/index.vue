@@ -1,5 +1,7 @@
 <script setup>
-import { defineAsyncComponent } from "vue";
+import { defineAsyncComponent, ref, onMounted } from "vue";
+import { useProduct } from "@/stores/product";
+const product = useProduct();
 
 const Carousel = defineAsyncComponent(() =>
   import("../components/shared/home/Carousel.vue")
@@ -16,6 +18,10 @@ const Download = defineAsyncComponent(() =>
 const TopCatWeek = defineAsyncComponent(() =>
   import("../components/shared/home/TopCatWeek.vue")
 );
+
+onMounted(() => {
+  product.pullProduct();
+});
 </script>
 <template>
   <v-container>

@@ -1,9 +1,14 @@
 <script setup>
 import { ref, defineAsyncComponent } from "vue";
+import { VVirtualScroll } from "vuetify/labs/VVirtualScroll";
+import { useProduct } from "@/stores/product";
+// components
 const ProductCard = defineAsyncComponent(() =>
   import("@/components/shared/product/ProductCard.vue")
 );
 let tab = ref(null);
+
+const product = useProduct();
 </script>
 <template>
   <v-container>
@@ -38,8 +43,12 @@ let tab = ref(null);
           <v-window-item v-for="i in 3" :key="i" :value="i">
             <v-container class="px-0">
               <v-row>
-                <v-col cols="12" md="3" v-for="i in 4">
-                  <ProductCard />
+                <v-col
+                  cols="12"
+                  md="3"
+                  v-for="(item, i) in product['allProducts']"
+                >
+                  <ProductCard :product="item" />
                 </v-col>
               </v-row>
             </v-container>

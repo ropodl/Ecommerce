@@ -1,9 +1,9 @@
 <script setup>
-import { defineAsyncComponent, ref, computed, reactive } from "vue";
+import { defineAsyncComponent, ref, computed, reactive, onMounted } from "vue";
+import { useProduct } from "@/stores/product";
 import { useTheme } from "vuetify";
 import {
   mdiHeartOutline,
-  mdiHeart,
   mdiMinus,
   mdiPlus,
   mdiShareVariantOutline,
@@ -13,7 +13,9 @@ import VueMagnifier from "@websitebeaver/vue-magnifier";
 import "@websitebeaver/vue-magnifier/styles.css";
 import { useRoute } from "vue-router";
 import { scrollTo } from "@/composable/scrollTo";
+// composables
 const route = useRoute();
+const product = useProduct();
 // components
 const Breadcrumb = defineAsyncComponent(() =>
   import("@/components/layout/Breadcrumb.vue")
@@ -66,7 +68,6 @@ const isDarkTheme = () => {
   return useTheme().global.current.value.dark;
 };
 const descIntersect = (isIntersecting, entries, observer) => {
-  console.log(entries);
   isIntersecting ?? (currentTab.value = "description");
 };
 const specIntersect = (isIntersecting, entries, observer) => {
@@ -78,14 +79,17 @@ const reviewIntersect = (isIntersecting, entries, observer) => {
 const accessoriesIntersect = (isIntersecting, entries, observer) => {
   isIntersecting ? (currentTab.value = "accessories") : "";
 };
+
+onMounted(() => {
+  product.pullProductId(route.params.id);
+});
 </script>
 <template>
   <v-container>
+    {{ product.currentProduct }}
     <v-row>
       <v-col cols="12">
         <Breadcrumb :path="path" />
-        <v-btn to="/product/a">a</v-btn>
-        <v-btn to="/product/test">test</v-btn>
       </v-col>
     </v-row>
     <v-row>
@@ -100,7 +104,7 @@ const accessoriesIntersect = (isIntersecting, entries, observer) => {
             class="mr-1"
           >
             <v-slide-group-item
-              v-for="(item, i) in currentProduct"
+              v-for="(item, i) in currentProduct.images"
               :key="i"
               v-slot="{ isSelected, toggle, selectedClass }"
             >
@@ -128,7 +132,7 @@ const accessoriesIntersect = (isIntersecting, entries, observer) => {
               class="rounded"
               :mgCornerBgColor="isDarkTheme() ? '#121212' : '#ffffff'"
               mg-shape="square"
-              :src="currentProduct[activeSlide].src"
+              :src="currentProduct[activeSlide]"
             />
             <v-btn
               icon
@@ -144,15 +148,16 @@ const accessoriesIntersect = (isIntersecting, entries, observer) => {
       <v-col cols="12" md="7">
         <v-rating
           readonly
-          v-model:model-value="quantity"
+          :model-value="Math.random() * 5"
           color="orange"
           size="small"
           :value="2"
           density="compact"
         ></v-rating>
-        <div class="text-h5 font-weight-bold">
-          60UH6150 60-Inch 4K Ultra HD Smart LED TV
-        </div>
+        <div
+          class="text-h5 font-weight-bold"
+          v-text="product.currentProduct.title"
+        ></div>
         <v-divider class="mt-4"></v-divider>
         <v-row>
           <v-col cols="12" md="6">
@@ -249,19 +254,6 @@ const accessoriesIntersect = (isIntersecting, entries, observer) => {
                 Add to cart
               </v-btn>
             </v-hover>
-          </v-col>
-          <v-col cols="12" md="3">
-            <v-btn
-              icon
-              rounded="circle"
-              width="52"
-              variant="outlined"
-              class="text-capitalize"
-              :class="wish ? 'text-red' : ''"
-              @click="wish = !wish"
-            >
-              <v-icon :icon="wish ? mdiHeartOutline : mdiHeart"></v-icon>
-            </v-btn>
           </v-col>
         </v-row>
       </v-col>

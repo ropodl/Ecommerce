@@ -1,22 +1,31 @@
 import { defineStore } from "pinia";
+import axios from "axios";
 
 export const useProduct = defineStore("product", {
-  state: () => {
-    products: [
-      {
-        title: "Test",
-        desc: "this is a test and the test is this",
-      },
-    ];
-  },
+  state: () => ({
+    products: [],
+    currentProduct: [],
+  }),
   getters: {
     allProducts(state) {
       return state.products;
     },
   },
   actions: {
-    addProduct(product) {
-      this.products.push(product);
+    pullProduct() {
+      axios
+        .get("https://api.escuelajs.co/api/v1/products?offset=0&limit=10")
+        .then((response) => {
+          this.products = response.data;
+          console.log(this.products);
+        });
+    },
+    pullProductId(id) {
+      axios
+        .get("https://api.escuelajs.co/api/v1/products/" + id)
+        .then((response) => {
+          this.currentProduct = response.data;
+        });
     },
   },
 });

@@ -16,6 +16,10 @@ const routes = [
         component: () => import("@/views/wishlist/index.vue"),
       },
       {
+        path: "/:category",
+        component: () => import("@/views/category/index.vue"),
+      },
+      {
         path: "/product/:id",
         component: () => import("@/views/product/show.vue"),
       },
