@@ -1,11 +1,11 @@
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { mdiMenu, mdiChevronDown, mdiChevronRight } from "@mdi/js";
 import { useTheme } from "vuetify";
 
-const isDarkTheme = () => {
+const isDark = computed(() => {
   return useTheme().global.current.value.dark;
-};
+});
 
 let current = ref(0);
 
@@ -146,7 +146,7 @@ let menuItems = [
       <v-card
         flat
         border
-        :theme="isDarkTheme() ? 'dark' : 'light'"
+        :theme="isDark ? 'dark' : 'light'"
         class="rounded-t-0"
         :width="menuItems[current].href ? 'auto' : '1168'"
       >
@@ -163,7 +163,7 @@ let menuItems = [
                     height="40"
                     v-bind="props"
                     :variant="isHovering ? 'tonal' : 'text'"
-                    :color="isDarkTheme() ? 'grey-lighten-3' : 'grey-darken-3'"
+                    :color="isDark ? 'grey-lighten-3' : 'grey-darken-3'"
                     @mouseenter="current = i"
                     class="text-body-2 text-capitalize d-inline-block pr-0"
                     :class="
@@ -187,7 +187,7 @@ let menuItems = [
               class="position-relative category-background"
               v-show="menuItems[current].href ? false : true"
               :style="
-                isDarkTheme()
+                isDark
                   ? ''
                   : 'background-image:url(' +
                     menuItems[current].background +

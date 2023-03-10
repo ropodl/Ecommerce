@@ -1,10 +1,11 @@
 <script setup>
+import { computed } from "vue";
 import { mdiChevronLeft, mdiChevronRight } from "@mdi/js";
 import { useTheme } from "vuetify";
 
-const isDarkTheme = () => {
+const isDark = computed(() => {
   return useTheme().global.current.value.dark;
-};
+});
 </script>
 <template>
   <v-container>
@@ -18,13 +19,13 @@ const isDarkTheme = () => {
             </div>
             <div class="d-flex">
               <v-btn
-                :color="isDarkTheme() ? 'grey-lighten-3' : 'grey-darken-3'"
+                :color="isDark ? 'grey-lighten-3' : 'grey-darken-3'"
                 class="mr-3"
                 variant="outlined"
                 :icon="mdiChevronLeft"
               ></v-btn>
               <v-btn
-                :color="isDarkTheme() ? 'grey-lighten-3' : 'grey-darken-3'"
+                :color="isDark ? 'grey-lighten-3' : 'grey-darken-3'"
                 variant="outlined"
                 :icon="mdiChevronRight"
               ></v-btn>
@@ -38,7 +39,7 @@ const isDarkTheme = () => {
             <v-card
               flat
               :to="'/product/' + i"
-              :color="isDarkTheme() ? 'transparent' : ''"
+              :color="isDark ? 'transparent' : ''"
             >
               <v-img
                 height="300"

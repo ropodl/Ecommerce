@@ -1,10 +1,11 @@
 <script setup>
+import { computed } from "vue";
 import { useTheme } from "vuetify";
 import { mdiShoppingOutline, mdiClose } from "@mdi/js";
 
-const isDarkTheme = () => {
+const isDark = computed(() => {
   return useTheme().global.current.value.dark;
-};
+});
 
 let cart = [
   {
@@ -71,13 +72,13 @@ const removeItem = (id) => {
         variant="text"
         height="50"
         class="text-capitalize ml-auto"
-        :color="isDarkTheme() ? 'grey-lighten-3' : 'grey-darken-3'"
+        :color="isDark ? 'grey-lighten-3' : 'grey-darken-3'"
         @click="test = !test"
         v-bind="props"
       >
         <v-badge
           inline
-          :color="isDarkTheme() ? 'grey-lighten-3' : 'grey-darken-3'"
+          :color="isDark ? 'grey-lighten-3' : 'grey-darken-3'"
           :content="0"
         >
           <v-icon start size="30" :icon="mdiShoppingOutline"></v-icon>
@@ -92,7 +93,12 @@ const removeItem = (id) => {
         </div>
       </v-btn>
     </template>
-    <v-card border flat class="overflow-auto rounded-t-0 ml-auto" width="350">
+    <v-card
+      border
+      flat
+      class="overflow-auto rounded-t-0 ml-auto border-t-0"
+      width="350"
+    >
       <v-list lines="two" density="compact" class="pa-0" height="300">
         <v-list-item
           border

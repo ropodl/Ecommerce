@@ -12,16 +12,15 @@ export const useProduct = defineStore("product", {
     },
   },
   actions: {
-    pullProduct() {
-      axios
+    async pullProduct() {
+      await axios
         .get("https://api.escuelajs.co/api/v1/products?offset=0&limit=10")
         .then((response) => {
           this.products = response.data;
-          console.log(this.products);
         });
     },
-    pullProductId(id) {
-      axios
+    async pullProductId(id) {
+      await axios
         .get("https://api.escuelajs.co/api/v1/products/" + id)
         .then((response) => {
           this.currentProduct = response.data;

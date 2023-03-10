@@ -1,5 +1,5 @@
 <script setup>
-import { defineAsyncComponent } from "vue";
+import { defineAsyncComponent, computed } from "vue";
 import { VDataTable } from "vuetify/labs/VDataTable";
 import { mdiDelete, mdiPencil } from "@mdi/js";
 import { useTheme } from "vuetify";
@@ -72,9 +72,9 @@ let wishlist = [
   },
 ];
 
-const isDarkTheme = () => {
+const isDark = computed(() => {
   return useTheme().global.current.value.dark;
-};
+});
 </script>
 <template>
   <v-container>
@@ -110,7 +110,7 @@ const isDarkTheme = () => {
             <template v-slot:item.name="{ item }">
               <router-link
                 class="text-decoration-none"
-                :class="isDarkTheme() ? 'white' : 'black'"
+                :class="isDark ? 'white' : 'black'"
                 to="/product/test"
               >
                 {{ item.raw.name }}

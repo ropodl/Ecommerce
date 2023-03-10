@@ -64,9 +64,9 @@ let currentProduct = [
 let wish = ref(false);
 let currentTab = ref(null);
 // methods
-const isDarkTheme = () => {
+const isDark = computed(() => {
   return useTheme().global.current.value.dark;
-};
+});
 const descIntersect = (isIntersecting, entries, observer) => {
   isIntersecting ?? (currentTab.value = "description");
 };
@@ -80,8 +80,8 @@ const accessoriesIntersect = (isIntersecting, entries, observer) => {
   isIntersecting ? (currentTab.value = "accessories") : "";
 };
 
-onMounted(() => {
-  product.pullProductId(route.params.id);
+onMounted(async () => {
+  await product.pullProductId(route.params.id);
 });
 </script>
 <template>
@@ -130,7 +130,7 @@ onMounted(() => {
           <div class="position-relative">
             <VueMagnifier
               class="rounded"
-              :mgCornerBgColor="isDarkTheme() ? '#121212' : '#ffffff'"
+              :mgCornerBgColor="isDark ? '#121212' : '#ffffff'"
               mg-shape="square"
               :src="currentProduct[activeSlide]"
             />
@@ -208,6 +208,12 @@ onMounted(() => {
             </li>
           </ul>
         </div>
+        <div>
+          <span class="text-h4 text-primary">
+            Nrs. {{ product.currentProduct.price }}
+            <!-- {{ product.currentProduct.price.toLocaleString("en-NP") }} -->
+          </span>
+        </div>
         <v-row>
           <v-col cols="12" md="6">
             <div class="d-inline-flex">
@@ -264,7 +270,7 @@ onMounted(() => {
     flat
     rounded="0"
     class="border-e-0 border-s-0"
-    :color="isDarkTheme() ? 'rgba(31,31,31,0.9)' : 'rgba(255,255,255,0.8)'"
+    :color="isDark ? 'rgba(31,31,31,0.9)' : 'rgba(255,255,255,0.8)'"
     style="
       position: sticky;
       top: 70px;

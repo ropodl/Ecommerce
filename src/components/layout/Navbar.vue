@@ -1,10 +1,9 @@
 <script setup>
-import { ref, defineAsyncComponent } from "vue";
+import { ref, defineAsyncComponent, computed } from "vue";
 import {
   mdiHeartOutline,
   mdiHeart,
   mdiMagnify,
-  mdiLogout,
   mdiPower,
   mdiAccount,
   mdiMapMarker,
@@ -25,15 +24,15 @@ const Cart = defineAsyncComponent(() =>
 let test = ref(null);
 const loading = ref(false);
 
-const isDarkTheme = () => {
+const isDark = computed(() => {
   return useTheme().global.current.value.dark;
-};
+});
 </script>
 <template>
   <v-app-bar
     height="70"
     class="navbar"
-    :theme="isDarkTheme() ? 'dark' : 'light'"
+    :theme="isDark ? 'dark' : 'light'"
     style="z-index: 2008 !important"
   >
     <v-container>
@@ -59,7 +58,7 @@ const isDarkTheme = () => {
           <v-btn
             height="50"
             class="text-capitalize"
-            :color="isDarkTheme() ? 'grey-lighten-3' : 'grey-darken-3'"
+            :color="isDark ? 'grey-lighten-3' : 'grey-darken-3'"
           >
             Mother's Day Sales
           </v-btn>
@@ -68,7 +67,7 @@ const isDarkTheme = () => {
               <v-btn
                 height="50"
                 class="text-capitalize"
-                :color="isDarkTheme() ? 'grey-lighten-3' : 'grey-darken-3'"
+                :color="isDark ? 'grey-lighten-3' : 'grey-darken-3'"
                 v-bind="props"
                 >Pages</v-btn
               >
@@ -78,13 +77,13 @@ const isDarkTheme = () => {
           <v-btn
             height="50"
             class="text-capitalize"
-            :color="isDarkTheme() ? 'grey-lighten-3' : 'grey-darken-3'"
+            :color="isDark ? 'grey-lighten-3' : 'grey-darken-3'"
             >Logitech Sale</v-btn
           >
           <v-btn
             height="50"
             class="text-capitalize"
-            :color="isDarkTheme() ? 'grey-lighten-3' : 'grey-darken-3'"
+            :color="isDark ? 'grey-lighten-3' : 'grey-darken-3'"
             >Headphone Sale</v-btn
           >
         </v-col>
@@ -95,7 +94,7 @@ const isDarkTheme = () => {
     flat
     height="50"
     class="searchbar"
-    :theme="isDarkTheme() ? 'dark' : 'light'"
+    :theme="isDark ? 'dark' : 'light'"
   >
     <v-container>
       <v-row align="center" justify="space-between">
@@ -125,7 +124,7 @@ const isDarkTheme = () => {
                 variant="text"
                 rounded="0"
                 height="50"
-                :color="isDarkTheme() ? 'grey-lighten-3' : 'grey-darken-3'"
+                :color="isDark ? 'grey-lighten-3' : 'grey-darken-3'"
                 to="/wishlist"
               >
                 <v-icon
@@ -167,7 +166,7 @@ const isDarkTheme = () => {
                   </v-avatar>
                 </v-btn>
               </template>
-              <v-card border flat class="rounded-t-0">
+              <v-card border flat class="rounded-t-0 border-t-0">
                 <v-list density="compact" class="py-0">
                   <v-list-item to="/account" :active="false">
                     <template v-slot:prepend>
