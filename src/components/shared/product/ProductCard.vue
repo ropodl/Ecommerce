@@ -14,7 +14,7 @@ const isDarkTheme = () => {
       <div class="position-relative mb-4">
         <v-img
           contain
-          src="https://static-01.daraz.com.np/p/fc95a4da8b9fad11f62275fcf4cd8075.jpg_720x720.jpg_.webp"
+          :src="product['image'][0]"
           :class="isHovering ? 'zoom' : ''"
         >
           <div class="d-flex align-center">

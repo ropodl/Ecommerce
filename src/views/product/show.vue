@@ -327,7 +327,7 @@ onMounted(() => {
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .border-black {
   outline: 1px solid black;
 }
