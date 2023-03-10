@@ -1,21 +1,21 @@
 <script setup>
 import { defineAsyncComponent, ref, computed, reactive, onMounted } from "vue";
-import { useProduct } from "@/stores/product";
 import { useTheme } from "vuetify";
+import axios from "axios";
 import {
   mdiHeartOutline,
   mdiMinus,
   mdiPlus,
   mdiShareVariantOutline,
   mdiMagnifyPlusOutline,
+  mdiStar,
 } from "@mdi/js";
-import VueMagnifier from "@websitebeaver/vue-magnifier";
-import "@websitebeaver/vue-magnifier/styles.css";
 import { useRoute } from "vue-router";
 import { scrollTo } from "@/composable/scrollTo";
+import VueMagnifier from "@websitebeaver/vue-magnifier";
+import "@websitebeaver/vue-magnifier/styles.css";
 // composables
 const route = useRoute();
-const product = useProduct();
 // components
 const Breadcrumb = defineAsyncComponent(() =>
   import("@/components/layout/Breadcrumb.vue")
@@ -43,24 +43,7 @@ const path = reactive([
 ]);
 let activeSlide = ref(0);
 let quantity = ref(1);
-let currentProduct = [
-  {
-    title: "Image 1",
-    src: "https://images.unsplash.com/photo-1618614944895-fc409a83ad80?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=512&q=10",
-  },
-  {
-    title: "Image 2",
-    src: "https://images.unsplash.com/photo-1588815375466-e7d21013ddd3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=512&q=80",
-  },
-  {
-    title: "Image 3",
-    src: "https://images.unsplash.com/photo-1618614944895-fc409a83ad80?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=512&q=80",
-  },
-  {
-    title: "Image 4",
-    src: "https://images.unsplash.com/photo-1618614944895-fc409a83ad80?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=512&q=80",
-  },
-];
+let currentProduct = ref([]);
 let wish = ref(false);
 let currentTab = ref(null);
 // methods
@@ -81,12 +64,16 @@ const accessoriesIntersect = (isIntersecting, entries, observer) => {
 };
 
 onMounted(async () => {
-  await product.pullProductId(route.params.id);
+  await axios
+    .get("https://dummyjson.com/products/" + route.params.id)
+    .then((response) => {
+      currentProduct.value = response.data;
+    });
 });
 </script>
 <template>
+  {{ currentProduct }}
   <v-container>
-    {{ product.currentProduct }}
     <v-row>
       <v-col cols="12">
         <Breadcrumb :path="path" />
@@ -121,19 +108,21 @@ onMounted(async () => {
                   cover
                   width="100"
                   height="70"
-                  :src="item['src']"
+                  :src="item"
                   @click="toggle"
                 ></v-img>
               </v-card>
             </v-slide-group-item>
           </v-slide-group>
           <div class="position-relative">
-            <VueMagnifier
-              class="rounded"
-              :mgCornerBgColor="isDark ? '#121212' : '#ffffff'"
-              mg-shape="square"
-              :src="currentProduct[activeSlide]"
-            />
+            <template v-if="currentProduct?.images">
+              <VueMagnifier
+                class="rounded"
+                :mgCornerBgColor="isDark ? '#121212' : '#ffffff'"
+                mg-shape="square"
+                :src="currentProduct.images[activeSlide]"
+              />
+            </template>
             <v-btn
               icon
               flat
@@ -146,17 +135,9 @@ onMounted(async () => {
         </div>
       </v-col>
       <v-col cols="12" md="7">
-        <v-rating
-          readonly
-          :model-value="Math.random() * 5"
-          color="orange"
-          size="small"
-          :value="2"
-          density="compact"
-        ></v-rating>
         <div
           class="text-h5 font-weight-bold"
-          v-text="product.currentProduct.title"
+          v-text="currentProduct['title']"
         ></div>
         <v-divider class="mt-4"></v-divider>
         <v-row>
@@ -170,16 +151,22 @@ onMounted(async () => {
                     ></v-img>
                   </v-avatar>
                 </template>
-                <v-list-item-title class="text-h6 font-weight-bold"
-                  >Nike</v-list-item-title
+                <v-list-item-title
+                  class="text-h6 font-weight-bold"
+                  v-text="currentProduct['brand']"
                 >
-                <v-list-item-title>Explore more product</v-list-item-title>
+                </v-list-item-title>
+                <v-list-item-title>Explore more</v-list-item-title>
               </v-list-item>
             </v-list>
           </v-col>
           <v-col cols="12" md="6">
             <div class="d-flex align-center h-100">
               <v-spacer></v-spacer>
+              <v-btn height="48" variant="text" color="white" class="mr-3">
+                {{ currentProduct["rating"]?.toFixed(1) }}
+                <v-icon end color="orange" :icon="mdiStar"></v-icon>
+              </v-btn>
               <v-btn icon flat color="transparent" class="mr-3">
                 <v-icon :icon="mdiShareVariantOutline"></v-icon>
               </v-btn>
@@ -191,7 +178,7 @@ onMounted(async () => {
         </v-row>
         <v-divider class="mb-4"></v-divider>
         <div class="mb-3">
-          <ul class="list-style-none">
+          <ul>
             <li>Multimedia Speakers</li>
             <li>120 watts peak</li>
             <li>Front-facing subwoofer</li>
@@ -210,8 +197,7 @@ onMounted(async () => {
         </div>
         <div>
           <span class="text-h4 text-primary">
-            Nrs. {{ product.currentProduct.price }}
-            <!-- {{ product.currentProduct.price.toLocaleString("en-NP") }} -->
+            Nrs. {{ currentProduct.price }}
           </span>
         </div>
         <v-row>
@@ -336,6 +322,9 @@ onMounted(async () => {
 <style lang="scss">
 .border-black {
   outline: 1px solid black;
+}
+.border-white {
+  outline: 1px solid white;
 }
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,

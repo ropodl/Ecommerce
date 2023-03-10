@@ -31,7 +31,7 @@ const isDark = computed(() => {
 <template>
   <v-app-bar
     height="70"
-    class="navbar"
+    class="navbar py-2"
     :theme="isDark ? 'dark' : 'light'"
     style="z-index: 2008 !important"
   >

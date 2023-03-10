@@ -4,7 +4,6 @@ import axios from "axios";
 export const useProduct = defineStore("product", {
   state: () => ({
     products: [],
-    currentProduct: [],
   }),
   getters: {
     allProducts(state) {
@@ -14,16 +13,9 @@ export const useProduct = defineStore("product", {
   actions: {
     async pullProduct() {
       await axios
-        .get("https://api.escuelajs.co/api/v1/products?offset=0&limit=10")
+        .get("https://dummyjson.com/products?limit=12")
         .then((response) => {
-          this.products = response.data;
-        });
-    },
-    async pullProductId(id) {
-      await axios
-        .get("https://api.escuelajs.co/api/v1/products/" + id)
-        .then((response) => {
-          this.currentProduct = response.data;
+          this.products = response.data.products;
         });
     },
   },

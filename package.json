@@ -17,7 +17,7 @@
     "swiper": "^9.0.5",
     "vue": "^3.2.13",
     "vue-router": "^4.0.0",
-    "vuetify": "^3.1.6",
+    "vuetify": "^3.1.8",
     "webfontloader": "^1.0.0"
   },
   "devDependencies": {
