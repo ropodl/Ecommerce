@@ -48,7 +48,6 @@ const isDark = computed(() => {
           </v-btn>
         </div>
       </v-img>
-
       <v-divider></v-divider>
       <v-card-text
         class="font-weight-bold pb-0"
