@@ -216,11 +216,12 @@ const isDark = computed(() => {
 </template>
 <style lang="scss" scoped>
 header.navbar {
-  position: sticky !important;
-  top: 0 !important;
+  position: unset !important;
+  // top: 0 !important;
 }
 header.searchbar {
-  position: unset !important;
+  position: sticky !important;
+  top: 0 !important;
   border-top: 0;
   overflow: visible;
 }

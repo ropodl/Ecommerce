@@ -31,7 +31,7 @@ const isDark = computed(() => {
       <v-img
         cover
         height="200"
-        :src="product['thumbnail']"
+        :src="product['images'][0]"
         :class="isHovering ? 'zoom' : ''"
       >
         <div class="d-flex align-center">
@@ -59,7 +59,7 @@ const isDark = computed(() => {
           Nrs.{{
             calculateOriginalPrice(
               product["price"],
-              product["discountPercentage"]
+              13
             )
           }}
         </span>

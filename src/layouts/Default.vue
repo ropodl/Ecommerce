@@ -1,5 +1,5 @@
 <script setup>
-import { defineAsyncComponent } from "vue";
+import { defineAsyncComponent, ref } from "vue";
 
 const Topbar = defineAsyncComponent(() =>
   import("@/components/layout/Topbar.vue")
@@ -16,12 +16,20 @@ const GoTop = defineAsyncComponent(() =>
 const Footer = defineAsyncComponent(() =>
   import("@/components/layout/Bottombar.vue")
 );
+
+let fromTop = 0;
+
+const onScroll = (e) => {
+  fromTop = e.target.scrollingElement.scrollTop;
+};
 </script>
 <template>
   <v-app>
     <Topbar />
     <Navbar />
+    <!-- <div v-scroll="onScroll"> -->
     <router-view />
+    <!-- </div> -->
     <GoTop />
     <Social />
     <Footer />

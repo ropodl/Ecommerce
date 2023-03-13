@@ -43,8 +43,11 @@ const product = useProduct();
             <v-container class="px-0">
               <v-row dense>
                 <v-col
-                  cols="12"
-                  md="2"
+                  cols="6"
+                  sm="4"
+                  md="4"
+                  lg="2"
+                  xl="2"
                   v-for="(item, i) in product['allProducts']"
                 >
                   <ProductCard :product="item" />

@@ -13,9 +13,9 @@ export const useProduct = defineStore("product", {
   actions: {
     async pullProduct() {
       await axios
-        .get("https://dummyjson.com/products?limit=12")
+        .get("https://api.escuelajs.co/api/v1/products?limit=12")
         .then((response) => {
-          this.products = response.data.products;
+          this.products = response.data;
         });
     },
   },
